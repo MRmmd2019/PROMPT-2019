@@ -3,337 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMPT-2019 | نسل جدید پرامپت‌نویسی</title>
-    <!-- لینک فونت وزیر -->
+    <title>PROMPT-2019 | معماری پرامپت‌های مدرن</title>
+    <!-- فونت وزیر -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     
     <style>
         :root {
-            /* پالت رنگی */
-            --bg-dark: #050505;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --primary-blue: #3B82F6;
-            --primary-purple: #8B5CF6;
-            --neon-green: #39FF14;
-            --alert-yellow: #FBBF24;
-            --danger-red: #EF4444;
+            --bg-deep: #030014; /* سیاه عمیق‌تر با ته مایه بنفش */
+            --primary: #3B82F6;
+            --purple: #8B5CF6;
+            --cyan: #06b6d4;
+            --green: #39FF14;
+            --red: #EF4444;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
-            --text-muted: #a1a1aa;
+            --text-dim: #94a3b8;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            outline: none;
-        }
-
+        /* --- تنظیمات پایه و ریست --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             color: var(--text-main);
             overflow-x: hidden;
             min-height: 100vh;
-            position: relative;
         }
 
-        /* --- پس‌زمینه زنده (Mesh Gradient) --- */
-        .ambient-light {
+        /* --- پس‌زمینه فوق حرفه‌ای (Grid + Glow) --- */
+        .bg-grid {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.2;
+            z-index: -2;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .ambient-glow {
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.05) 40%, transparent 70%);
+            filter: blur(80px);
             z-index: -1;
-            background: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
-                        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
-            filter: blur(60px);
-            animation: pulseLight 10s infinite alternate;
+            animation: pulseGlow 8s ease-in-out infinite alternate;
         }
 
-        @keyframes pulseLight {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.1); opacity: 1; }
+        @keyframes pulseGlow {
+            0% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            100% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
         }
 
-        /* --- هدر شیشه‌ای --- */
+        /* --- هدر شناور --- */
         header {
             position: fixed;
-            top: 20px;
-            left: 5%;
-            right: 5%;
-            padding: 15px 30px;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            padding: 12px 24px;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 20px;
-            z-index: 100;
-            
-            /* Glassmorphism Effect */
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
 
-        .logo {
-            font-weight: 900;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-            background: linear-gradient(to right, #fff, var(--primary-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .brand {
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand span { color: var(--primary); }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
-        .nav-btn {
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            transition: 0.3s;
+        }
+
+        .social-btn:hover {
+            background: var(--primary);
             color: white;
-            padding: 10px 24px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
+            border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
         }
+        
+        .social-btn svg { width: 20px; height: 20px; fill: currentColor; }
 
-        /* --- کانتینر اصلی --- */
+        /* --- محتوای اصلی --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 140px 20px 50px;
+            padding-top: 180px;
             text-align: center;
+            position: relative;
         }
 
-        /* --- بخش هیرو --- */
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
+        /* انیمیشن متن‌ها */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- تایپوگرافی --- */
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
             border-radius: 50px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ff8888;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--primary);
             font-size: 0.85rem;
-            margin-bottom: 25px;
-            backdrop-filter: blur(4px);
+            margin-bottom: 24px;
+            font-weight: 600;
         }
 
         h1 {
-            font-size: 4rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
+            font-size: 5rem;
             font-weight: 900;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple), var(--neon-green));
-            background-size: 200% auto;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #fff 0%, #b0b0b0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: gradientMove 5s linear infinite;
+        }
+        
+        h1 span {
+            background: linear-gradient(90deg, var(--primary), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        p.subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
+        p.desc {
+            font-size: 1.25rem;
+            color: var(--text-dim);
             max-width: 600px;
-            margin: 0 auto 50px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
         }
 
-        .cta-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 80px;
-        }
-
-        .btn-primary {
-            padding: 16px 40px;
-            background: white;
+        /* --- دکمه‌های نئونی --- */
+        .btn-glow {
+            display: inline-flex;
+            align-items: center;
+            padding: 18px 48px;
+            background: var(--text-main);
             color: black;
             font-weight: 800;
-            border-radius: 16px;
+            font-size: 1.1rem;
+            border-radius: 50px;
             text-decoration: none;
             transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
-        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
 
-        .btn-secondary {
-            padding: 16px 40px;
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-weight: 600;
+        .btn-glow:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- موکاپ سه بعدی (Visual Element) --- */
+        .mockup-container {
+            margin-top: 80px;
+            perspective: 1000px;
+            opacity: 0;
+            animation: fadeInUp 1s 0.6s forwards;
+        }
+
+        .mockup-window {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(20, 20, 25, 0.9);
+            border: 1px solid var(--border);
             border-radius: 16px;
-            text-decoration: none;
-            border: 1px solid var(--glass-border);
-            transition: 0.3s;
-        }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
-
-        /* --- کارت‌ها (Glassmorphism + Material) --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            padding: 40px 30px;
-            border-radius: 24px;
-            text-align: right;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8), 
+                        0 0 0 1px rgba(255,255,255,0.05);
+            transform: rotateX(20deg) scale(0.9);
+            transition: 0.5s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .glass-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        .mockup-window:hover {
+            transform: rotateX(0deg) scale(1);
+            box-shadow: 0 20px 60px -10px rgba(59, 130, 246, 0.2);
         }
 
-        /* افکت نور پس‌زمینه کارت */
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-            transform: translateX(-100%);
-            transition: 0.5s;
-        }
-        .glass-card:hover::before { transform: translateX(100%); }
-
-        /* --- آیکون‌های مربعی با گوشه گرد (Squircle) --- */
-        .icon-box {
-            width: 64px;
-            height: 64px;
-            border-radius: 18px; /* گوشه‌های گرد مدرن */
+        /* هدر پنجره موکاپ */
+        .window-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
             display: flex;
+            gap: 8px;
+            background: rgba(255,255,255,0.03);
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.red { background: var(--red); }
+        .dot.yellow { background: var(--alert-yellow); }
+        .dot.green { background: var(--green); }
+
+        .window-body {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            font-size: 28px;
-            color: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* شبیه‌سازی محتوای داخل پنجره */
+        .skeleton-line { height: 12px; background: var(--border); border-radius: 4px; width: 100%; }
+        .s-1 { width: 60%; }
+        .s-2 { width: 80%; }
+        .s-3 { width: 40%; height: 40px; margin-top: 20px; background: linear-gradient(90deg, var(--primary), var(--purple)); }
+
+        /* --- کارت‌های فیچر --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 100px;
+            padding-bottom: 50px;
+            text-align: right;
         }
 
-        .icon-blue { background: linear-gradient(135deg, #3B82F6, #2563EB); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
-        .icon-purple { background: linear-gradient(135deg, #8B5CF6, #7C3AED); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3); }
-        .icon-green { background: linear-gradient(135deg, #39FF14, #22c55e); color: black; box-shadow: 0 10px 20px rgba(57, 255, 20, 0.2); }
+        .pro-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.0) 100%);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.3s;
+            position: relative;
+        }
 
-        .glass-card h3 {
+        .pro-card:hover {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .icon-sq {
+            width: 50px; height: 50px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--text-main);
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
 
-        .glass-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.8;
-        }
+        h3 { font-size: 1.3rem; margin-bottom: 10px; }
+        p.card-desc { font-size: 0.9rem; color: var(--text-dim); }
 
         /* --- فوتر --- */
         footer {
-            margin-top: 100px;
+            border-top: 1px solid var(--border);
             padding: 40px;
-            border-top: 1px solid var(--glass-border);
             text-align: center;
-            color: #666;
-            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-top: 50px;
+            background: #000;
         }
 
+        /* موبایل */
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .cta-group { flex-direction: column; }
-            header { padding: 15px; width: 90%; left: 5%; }
+            h1 { font-size: 3rem; }
+            .mockup-window { transform: rotateX(0) scale(1); width: 100%; }
+            header { width: 95%; padding: 10px 20px; }
+            .brand { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-light"></div>
+    <!-- پس‌زمینه شبکه و نور -->
+    <div class="bg-grid"></div>
+    <div class="ambient-glow"></div>
 
-    <header>
-        <div class="logo">PROMPT-2019</div>
-        <a href="panel.html" class="nav-btn">شروع کار</a>
+    <!-- هدر -->
+    <header class="fade-in-up">
+        <div class="brand">PROMPT-<span>2019</span></div>
+        <div class="social-links">
+            <!-- Telegram Icon -->
+            <a href="https://t.me/YOUR_ID" class="social-btn" title="Telegram" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            </a>
+            <!-- GitHub Icon -->
+            <a href="https://github.com/YOUR_ID" class="social-btn" title="GitHub" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        </div>
     </header>
 
     <div class="container">
-        
-        <!-- Hero Section -->
-        <div class="hero-badge">
-            <span style="color: var(--danger-red);">●</span>
-            <span>توکن‌های AI خود را هدر ندهید!</span>
-        </div>
+        <!-- Badge -->
+        <div class="badge fade-in-up delay-1">✨ هوش مصنوعی مولد نسخه ۲.۰</div>
 
-        <h1>
-            دنیای خود را با<br>
-            <span class="gradient-text">پرامپت‌های جادویی</span> خلق کنید
+        <!-- Title -->
+        <h1 class="fade-in-up delay-2">
+            ساخت پرامپت،<br>
+            <span>بدون محدودیت</span>
         </h1>
-        
-        <p class="subtitle">
-            اولین پلتفرم هوشمند ایرانی برای تبدیل ایده‌های خام به شاهکارهای هنری، ویدیوهای سینمایی و کدهای تمیز. بدون نیاز به دانش فنی.
+
+        <!-- Subtitle -->
+        <p class="desc fade-in-up delay-3">
+            ابزاری قدرتمند برای طراحان و توسعه‌دهندگان. ایده‌های خود را به زبان ماشین ترجمه کنید و خروجی‌هایی خیره‌کننده از Midjourney، Sora و ChatGPT بگیرید.
         </p>
 
-        <div class="cta-group">
-            <a href="panel.html" class="btn-primary">ساخت پرامپت رایگان ⚡</a>
-            <a href="#" class="btn-secondary">مشاهده آموزش‌ها</a>
+        <!-- CTA Button -->
+        <div class="fade-in-up delay-3">
+            <a href="panel.html" class="btn-glow">شروع رایگان 🚀</a>
         </div>
 
-        <!-- Cards Section -->
-        <div class="grid">
-            <!-- Card 1 -->
-            <div class="glass-card">
-                <div class="icon-box icon-blue">
-                    <span>🖼️</span>
+        <!-- 3D Mockup Element -->
+        <div class="mockup-container">
+            <div class="mockup-window">
+                <div class="window-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
                 </div>
-                <h3>تصویرسازی هوشمند</h3>
-                <p>ساخت دقیق‌ترین پرامپت‌ها برای Midjourney و Stable Diffusion. تنظیم خودکار نور، لنز و استایل هنری.</p>
+                <div class="window-body">
+                    <div class="skeleton-line s-1"></div>
+                    <div class="skeleton-line s-2"></div>
+                    <div class="skeleton-line s-1"></div>
+                    <div class="skeleton-line s-3"></div> <!-- Button representation -->
+                </div>
             </div>
+        </div>
 
-            <!-- Card 2 -->
-            <div class="glass-card">
-                <div class="icon-box icon-purple">
-                    <span>🎬</span>
-                </div>
-                <h3>کارگردانی ویدیو AI</h3>
-                <p>کنترل کامل روی حرکت دوربین و صحنه در ابزارهایی مثل Sora و Runway. ایده‌هایتان را به فیلم تبدیل کنید.</p>
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <div class="pro-card">
+                <div class="icon-sq" style="color: var(--primary);">🖼️</div>
+                <h3>Image Generation</h3>
+                <p class="card-desc">تنظیمات حرفه‌ای ISO، لنز و نورپردازی برای خروجی‌های فتورئالیستیک.</p>
             </div>
-
-            <!-- Card 3 -->
-            <div class="glass-card">
-                <div class="icon-box icon-green">
-                    <span>💻</span>
-                </div>
-                <h3>کدنویسی بدون باگ</h3>
-                <p>تبدیل زبان طبیعی به منطق برنامه‌نویسی. دریافت کدهای بهینه و ساختاریافته از ChatGPT و Claude.</p>
+            
+            <div class="pro-card">
+                <div class="icon-sq" style="color: var(--purple);">🎥</div>
+                <h3>Video Director</h3>
+                <p class="card-desc">سناریو نویسی برای AI. کنترل حرکت دوربین و دینامیک صحنه.</p>
+            </div>
+            
+            <div class="pro-card">
+                <div class="icon-sq" style="color: var(--green);">💻</div>
+                <h3>Clean Code</h3>
+                <p class="card-desc">تولید کدهای بهینه و داکیومنت شده با استانداردهای مهندسی نرم‌افزار.</p>
             </div>
         </div>
 
     </div>
 
     <footer>
-        <p>© 2025 PROMPT-2019. طراحی شده با عشق و هوش مصنوعی.</p>
+        <p>© 2025 PROMPT-2019. Open Source Project.</p>
     </footer>
 
 </body>

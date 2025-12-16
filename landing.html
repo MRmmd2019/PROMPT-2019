@@ -1,1 +1,60 @@
 
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ثبت‌نام خودرو</title>
+  <link rel="preload" href="/assets/fonts/Vazir.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="loader.css">
+</head>
+<body>
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="dots">
+      <span class="dot blue"></span>
+      <span class="dot black"></span>
+      <span class="dot white"></span>
+    </div>
+  </div>
+
+  <header class="site-header glass">
+    <div class="logo-wrap">
+      <!-- جای لوگو (بزرگ و حرفه‌ای) -->
+      <img src="/assets/img/logo-placeholder.svg" alt="لوگوی شما" class="logo-img"/>
+    </div>
+    <nav class="nav-minimal">
+      <a class="nav-link" href="/">خانه</a>
+      <a class="nav-link" href="#companies">شرکت‌ها</a>
+      <a class="nav-link" href="#cars">خودروها</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero glass">
+      <h1 class="hero-title">فرایند ثبت‌نام سریع و ساده</h1>
+      <p class="hero-subtitle">شرکت را انتخاب کن، خودرو را ببین، فرم را بفرست—ادامه هماهنگی در تلگرام</p>
+      <a class="btn-primary" href="#companies">شروع</a>
+    </section>
+
+    <section id="companies" class="section">
+      <h2 class="section-title">شرکت‌ها</h2>
+      <div id="companiesGrid" class="grid cards-grid"></div>
+    </section>
+
+    <section id="cars" class="section" hidden>
+      <div class="section-title-row">
+        <h2 class="section-title">خودروها</h2>
+        <button id="backToCompanies" class="btn-secondary">بازگشت به شرکت‌ها</button>
+      </div>
+      <div id="carsGrid" class="grid cards-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-credit">طراحی شده توسط MR.MMD2019</p>
+  </footer>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

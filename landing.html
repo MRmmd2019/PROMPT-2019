@@ -3,247 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROMPT-2019 | دستیار هوشمند ساخت پرامپت</title>
+    <title>PROMPT-2019 | نسل جدید پرامپت‌نویسی</title>
+    <!-- لینک فونت وزیر -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
     <style>
         :root {
-            --bg-black: #121212;
-            --text-white: #EAEAEA;
+            /* پالت رنگی */
+            --bg-dark: #050505;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
             --primary-blue: #3B82F6;
-            --accent-purple: #8B5CF6;
+            --primary-purple: #8B5CF6;
             --neon-green: #39FF14;
             --alert-yellow: #FBBF24;
             --danger-red: #EF4444;
-            --card-bg: #1E1E1E;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
         body {
-            font-family: 'Tahoma', sans-serif;
-            background-color: var(--bg-black);
-            color: var(--text-white);
-            line-height: 1.6;
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             overflow-x: hidden;
-        }
-
-        /* --- Header / Navbar --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background: rgba(18, 18, 18, 0.95);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #333;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-white);
-            letter-spacing: 1px;
-        }
-        
-        .logo span { color: var(--primary-blue); }
-
-        .nav-btn {
-            padding: 8px 20px;
-            background: transparent;
-            border: 1px solid var(--primary-blue);
-            color: var(--primary-blue);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .nav-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            background: radial-gradient(circle at 50% 50%, #2a1a4a 0%, var(--bg-black) 70%);
+            min-height: 100vh;
             position: relative;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--accent-purple));
+        /* --- پس‌زمینه زنده (Mesh Gradient) --- */
+        .ambient-light {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+            filter: blur(60px);
+            animation: pulseLight 10s infinite alternate;
+        }
+
+        @keyframes pulseLight {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* --- هدر شیشه‌ای --- */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 5%;
+            right: 5%;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 20px;
+            z-index: 100;
+            
+            /* Glassmorphism Effect */
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, var(--primary-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 40px;
-            color: #ccc;
-        }
-
-        .cta-btn {
-            padding: 15px 40px;
-            background: linear-gradient(45deg, var(--primary-blue), var(--accent-purple));
+        .nav-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
             color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
+            padding: 10px 24px;
+            border-radius: 12px;
             text-decoration: none;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
-        }
-
-        /* --- Pain Point (Red Usage) --- */
-        .alert-banner {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--danger-red);
-            color: #ffcccc;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+            font-weight: bold;
             font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
+        }
+
+        /* --- کانتینر اصلی --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 140px 20px 50px;
+            text-align: center;
+        }
+
+        /* --- بخش هیرو --- */
+        .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-        }
-        .alert-banner span { color: var(--danger-red); font-weight: bold; }
-
-        /* --- Features Section --- */
-        .features {
-            padding: 100px 10%;
-            background: var(--bg-black);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 60px;
-        }
-        .section-title span { border-bottom: 3px solid var(--neon-green); }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ff8888;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            backdrop-filter: blur(4px);
         }
 
-        .card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid #333;
+        h1 {
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple), var(--neon-green));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 5s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 80px;
+        }
+
+        .btn-primary {
+            padding: 16px 40px;
+            background: white;
+            color: black;
+            font-weight: 800;
+            border-radius: 16px;
+            text-decoration: none;
             transition: 0.3s;
+        }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+
+        .btn-secondary {
+            padding: 16px 40px;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-weight: 600;
+            border-radius: 16px;
+            text-decoration: none;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+        /* --- کارت‌ها (Glassmorphism + Material) --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 40px 30px;
+            border-radius: 24px;
+            text-align: right;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
         }
 
-        .card:hover {
+        .glass-card:hover {
             transform: translateY(-10px);
-            border-color: var(--accent-purple);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            display: block;
+        /* افکت نور پس‌زمینه کارت */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+        .glass-card:hover::before { transform: translateX(100%); }
+
+        /* --- آیکون‌های مربعی با گوشه گرد (Squircle) --- */
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px; /* گوشه‌های گرد مدرن */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        .card h3 { color: var(--primary-blue); margin-bottom: 15px; }
-        .card p { color: #aaa; font-size: 0.9rem; }
+        .icon-blue { background: linear-gradient(135deg, #3B82F6, #2563EB); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
+        .icon-purple { background: linear-gradient(135deg, #8B5CF6, #7C3AED); box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3); }
+        .icon-green { background: linear-gradient(135deg, #39FF14, #22c55e); color: black; box-shadow: 0 10px 20px rgba(57, 255, 20, 0.2); }
 
-        /* --- Footer --- */
+        .glass-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .glass-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        /* --- فوتر --- */
         footer {
+            margin-top: 100px;
             padding: 40px;
+            border-top: 1px solid var(--glass-border);
             text-align: center;
-            border-top: 1px solid #333;
             color: #666;
-            margin-top: 50px;
+            font-size: 0.9rem;
         }
 
-        /* --- Responsive --- */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .features { padding: 60px 5%; }
+            h1 { font-size: 2.5rem; }
+            .cta-group { flex-direction: column; }
+            header { padding: 15px; width: 90%; left: 5%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- نوار ناوبری -->
+    <div class="ambient-light"></div>
+
     <header>
-        <div class="logo">PROMPT-<span>2019</span></div>
-        <a href="panel.html" class="nav-btn">ورود به پنل</a>
+        <div class="logo">PROMPT-2019</div>
+        <a href="panel.html" class="nav-btn">شروع کار</a>
     </header>
 
-    <!-- بخش هیرو (اصلی) -->
-    <section class="hero">
-        <div class="alert-banner">
-            <span>⛔ ایست!</span>
-             دیگر توکن‌های هوش مصنوعی خود را با پرامپت‌های ضعیف هدر ندهید.
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <div class="hero-badge">
+            <span style="color: var(--danger-red);">●</span>
+            <span>توکن‌های AI خود را هدر ندهید!</span>
         </div>
-        
-        <h1>هنر پرامپت‌نویسی را<br>متحول کنید</h1>
-        <p>دستیار تخصصی ساخت پرامپت برای تولید تصویر، ویدیو و کدهای برنامه‌نویسی. با PROMPT-2019 ایده‌های خود را دقیق‌تر به هوش مصنوعی بفهمانید.</p>
-        
-        <a href="panel.html" class="cta-btn">شروع ساخت پرامپت رایگان 🚀</a>
-    </section>
 
-    <!-- بخش ویژگی‌ها -->
-    <section class="features">
-        <h2 class="section-title"><span>چرا PROMPT-2019؟</span></h2>
+        <h1>
+            دنیای خود را با<br>
+            <span class="gradient-text">پرامپت‌های جادویی</span> خلق کنید
+        </h1>
         
-        <div class="cards-grid">
-            <!-- کارت 1 -->
-            <div class="card">
-                <span class="card-icon">🎨</span>
-                <h3>ساخت تصویر (Image Gen)</h3>
-                <p>تولید پرامپت‌های دقیق با پارامترهای دوربین، نورپردازی و استایل برای Midjourney و Stable Diffusion.</p>
+        <p class="subtitle">
+            اولین پلتفرم هوشمند ایرانی برای تبدیل ایده‌های خام به شاهکارهای هنری، ویدیوهای سینمایی و کدهای تمیز. بدون نیاز به دانش فنی.
+        </p>
+
+        <div class="cta-group">
+            <a href="panel.html" class="btn-primary">ساخت پرامپت رایگان ⚡</a>
+            <a href="#" class="btn-secondary">مشاهده آموزش‌ها</a>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="grid">
+            <!-- Card 1 -->
+            <div class="glass-card">
+                <div class="icon-box icon-blue">
+                    <span>🖼️</span>
+                </div>
+                <h3>تصویرسازی هوشمند</h3>
+                <p>ساخت دقیق‌ترین پرامپت‌ها برای Midjourney و Stable Diffusion. تنظیم خودکار نور، لنز و استایل هنری.</p>
             </div>
 
-            <!-- کارت 2 -->
-            <div class="card">
-                <span class="card-icon">🎥</span>
-                <h3>ساخت ویدیو (Video AI)</h3>
-                <p>کنترل کامل روی حرکت دوربین، نرخ فریم و سناریو برای ابزارهایی مثل Runway و Sora.</p>
+            <!-- Card 2 -->
+            <div class="glass-card">
+                <div class="icon-box icon-purple">
+                    <span>🎬</span>
+                </div>
+                <h3>کارگردانی ویدیو AI</h3>
+                <p>کنترل کامل روی حرکت دوربین و صحنه در ابزارهایی مثل Sora و Runway. ایده‌هایتان را به فیلم تبدیل کنید.</p>
             </div>
 
-            <!-- کارت 3 -->
-            <div class="card">
-                <span class="card-icon">💻</span>
-                <h3>دستیار کدنویسی (Code)</h3>
-                <p>تبدیل درخواست‌های ساده به پرامپت‌های مهندسی شده برای دریافت کدهای تمیز و بدون باگ.</p>
+            <!-- Card 3 -->
+            <div class="glass-card">
+                <div class="icon-box icon-green">
+                    <span>💻</span>
+                </div>
+                <h3>کدنویسی بدون باگ</h3>
+                <p>تبدیل زبان طبیعی به منطق برنامه‌نویسی. دریافت کدهای بهینه و ساختاریافته از ChatGPT و Claude.</p>
             </div>
         </div>
-    </section>
+
+    </div>
 
     <footer>
-        <p>© 2025 PROMPT-2019. تمامی حقوق محفوظ است.</p>
-        <p style="font-size: 0.8rem; margin-top: 10px; color: var(--alert-yellow);">
-            Designed with ❤️ for AI Creators
-        </p>
+        <p>© 2025 PROMPT-2019. طراحی شده با عشق و هوش مصنوعی.</p>
     </footer>
 
 </body>

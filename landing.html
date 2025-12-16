@@ -1,60 +1,250 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ثبت‌نام خودرو</title>
-  <link rel="preload" href="/assets/fonts/Vazir.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="loader.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROMPT-2019 | دستیار هوشمند ساخت پرامپت</title>
+    <style>
+        :root {
+            --bg-black: #121212;
+            --text-white: #EAEAEA;
+            --primary-blue: #3B82F6;
+            --accent-purple: #8B5CF6;
+            --neon-green: #39FF14;
+            --alert-yellow: #FBBF24;
+            --danger-red: #EF4444;
+            --card-bg: #1E1E1E;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Header / Navbar --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(18, 18, 18, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-white);
+            letter-spacing: 1px;
+        }
+        
+        .logo span { color: var(--primary-blue); }
+
+        .nav-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at 50% 50%, #2a1a4a 0%, var(--bg-black) 70%);
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            color: #ccc;
+        }
+
+        .cta-btn {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+        }
+
+        /* --- Pain Point (Red Usage) --- */
+        .alert-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger-red);
+            color: #ffcccc;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-banner span { color: var(--danger-red); font-weight: bold; }
+
+        /* --- Features Section --- */
+        .features {
+            padding: 100px 10%;
+            background: var(--bg-black);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 60px;
+        }
+        .section-title span { border-bottom: 3px solid var(--neon-green); }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-purple);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .card h3 { color: var(--primary-blue); margin-bottom: 15px; }
+        .card p { color: #aaa; font-size: 0.9rem; }
+
+        /* --- Footer --- */
+        footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid #333;
+            color: #666;
+            margin-top: 50px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .features { padding: 60px 5%; }
+        }
+    </style>
 </head>
 <body>
-  <div id="loader" class="loader" aria-hidden="true">
-    <div class="dots">
-      <span class="dot blue"></span>
-      <span class="dot black"></span>
-      <span class="dot white"></span>
-    </div>
-  </div>
 
-  <header class="site-header glass">
-    <div class="logo-wrap">
-      <!-- جای لوگو (بزرگ و حرفه‌ای) -->
-      <img src="/assets/img/logo-placeholder.svg" alt="لوگوی شما" class="logo-img"/>
-    </div>
-    <nav class="nav-minimal">
-      <a class="nav-link" href="/">خانه</a>
-      <a class="nav-link" href="#companies">شرکت‌ها</a>
-      <a class="nav-link" href="#cars">خودروها</a>
-    </nav>
-  </header>
+    <!-- نوار ناوبری -->
+    <header>
+        <div class="logo">PROMPT-<span>2019</span></div>
+        <a href="panel.html" class="nav-btn">ورود به پنل</a>
+    </header>
 
-  <main>
-    <section class="hero glass">
-      <h1 class="hero-title">فرایند ثبت‌نام سریع و ساده</h1>
-      <p class="hero-subtitle">شرکت را انتخاب کن، خودرو را ببین، فرم را بفرست—ادامه هماهنگی در تلگرام</p>
-      <a class="btn-primary" href="#companies">شروع</a>
+    <!-- بخش هیرو (اصلی) -->
+    <section class="hero">
+        <div class="alert-banner">
+            <span>⛔ ایست!</span>
+             دیگر توکن‌های هوش مصنوعی خود را با پرامپت‌های ضعیف هدر ندهید.
+        </div>
+        
+        <h1>هنر پرامپت‌نویسی را<br>متحول کنید</h1>
+        <p>دستیار تخصصی ساخت پرامپت برای تولید تصویر، ویدیو و کدهای برنامه‌نویسی. با PROMPT-2019 ایده‌های خود را دقیق‌تر به هوش مصنوعی بفهمانید.</p>
+        
+        <a href="panel.html" class="cta-btn">شروع ساخت پرامپت رایگان 🚀</a>
     </section>
 
-    <section id="companies" class="section">
-      <h2 class="section-title">شرکت‌ها</h2>
-      <div id="companiesGrid" class="grid cards-grid"></div>
+    <!-- بخش ویژگی‌ها -->
+    <section class="features">
+        <h2 class="section-title"><span>چرا PROMPT-2019؟</span></h2>
+        
+        <div class="cards-grid">
+            <!-- کارت 1 -->
+            <div class="card">
+                <span class="card-icon">🎨</span>
+                <h3>ساخت تصویر (Image Gen)</h3>
+                <p>تولید پرامپت‌های دقیق با پارامترهای دوربین، نورپردازی و استایل برای Midjourney و Stable Diffusion.</p>
+            </div>
+
+            <!-- کارت 2 -->
+            <div class="card">
+                <span class="card-icon">🎥</span>
+                <h3>ساخت ویدیو (Video AI)</h3>
+                <p>کنترل کامل روی حرکت دوربین، نرخ فریم و سناریو برای ابزارهایی مثل Runway و Sora.</p>
+            </div>
+
+            <!-- کارت 3 -->
+            <div class="card">
+                <span class="card-icon">💻</span>
+                <h3>دستیار کدنویسی (Code)</h3>
+                <p>تبدیل درخواست‌های ساده به پرامپت‌های مهندسی شده برای دریافت کدهای تمیز و بدون باگ.</p>
+            </div>
+        </div>
     </section>
 
-    <section id="cars" class="section" hidden>
-      <div class="section-title-row">
-        <h2 class="section-title">خودروها</h2>
-        <button id="backToCompanies" class="btn-secondary">بازگشت به شرکت‌ها</button>
-      </div>
-      <div id="carsGrid" class="grid cards-grid"></div>
-    </section>
-  </main>
+    <footer>
+        <p>© 2025 PROMPT-2019. تمامی حقوق محفوظ است.</p>
+        <p style="font-size: 0.8rem; margin-top: 10px; color: var(--alert-yellow);">
+            Designed with ❤️ for AI Creators
+        </p>
+    </footer>
 
-  <footer class="site-footer">
-    <p class="footer-credit">طراحی شده توسط MR.MMD2019</p>
-  </footer>
-
-  <script src="/app.js" defer></script>
 </body>
 </html>
